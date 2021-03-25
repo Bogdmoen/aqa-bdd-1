@@ -16,11 +16,23 @@ import static ru.netology.web.data.DataHelper.*;
 
 public class TransferTest {
 
+    private LoginPage loginPage;
+    private VerificationPage verificationPage;
+    private DashboardPage dashboardPage;
+    private MoneyTransferPage moneyTransferPage;
+
     @BeforeEach
     public void setUp() {
         open("http://localhost:9999");
-        LoginPage.validLogin(getAuthInfo());
-        VerificationPage.validVerify(getVerificationCodeFor(getAuthInfo()));
+//        LoginPage.validLogin(getAuthInfo());
+//        VerificationPage.validVerify(getVerificationCodeFor(getAuthInfo()));
+        loginPage = new LoginPage();
+        val authInfo = getAuthInfo();
+        verificationPage = loginPage.validLogin(authInfo);
+        val verificationCode = DataHelper.getVerificationCodeFor(authInfo);
+        dashboardPage = verificationPage.validVerify(verificationCode);
+        moneyTransferPage = dashboardPage.toTransferMoney(1);
+        moneyTransferPage.cancelTransfer();
     }
 
     @AfterEach
@@ -28,7 +40,7 @@ public class TransferTest {
         if (testInfo.getTags().contains("skip")) {
             return;
         }
-        DashboardPage.setToInitialState();
+        dashboardPage.setToInitialState(moneyTransferPage);
     }
 
 
@@ -50,10 +62,10 @@ public class TransferTest {
     @Test
     public void shouldTransferSumToFirst() {
         int amount = DataHelper.getValidSumForTransfer();
-        int initialBalance = DashboardPage.getCardBalance(1);
-        DashboardPage.toTransferMoney(1);
-        MoneyTransferPage.transferSum(amount, 2);
-        int actual = DashboardPage.getCardBalance(1);
+        int initialBalance = dashboardPage.getCardBalance(1);
+        dashboardPage.toTransferMoney(1);
+        moneyTransferPage.transferSum(amount, 2);
+        int actual = dashboardPage.getCardBalance(1);
         int expected = initialBalance + amount;
         assertEquals(expected, actual);
     }
@@ -61,10 +73,10 @@ public class TransferTest {
     @Test
     public void shouldTransferSumToSecond() {
         int amount = DataHelper.getValidSumForTransfer();
-        int initialBalance = DashboardPage.getCardBalance(2);
-        DashboardPage.toTransferMoney(2);
-        MoneyTransferPage.transferSum(amount, 1);
-        int actual = DashboardPage.getCardBalance(2);
+        int initialBalance = dashboardPage.getCardBalance(2);
+        dashboardPage.toTransferMoney(2);
+        moneyTransferPage.transferSum(amount, 1);
+        int actual = dashboardPage.getCardBalance(2);
         int expected = initialBalance + amount;
         assertEquals(expected, actual);
     }
@@ -72,36 +84,43 @@ public class TransferTest {
     @Test
     @Tag("skip")
     public void shouldHaveEmptyFormsAlert() {
-        DashboardPage.toTransferMoney(1);
-        MoneyTransferPage.getEmptyFieldAlert();
+        dashboardPage.toTransferMoney(1);
+        moneyTransferPage.getEmptyFieldAlert();
     }
 
     @Test
     @Tag("skip")
     public void shouldHaveEmptyCardAlert() {
-        DashboardPage.toTransferMoney(1);
-        MoneyTransferPage.getEmptyCardFieldAlert();
+        dashboardPage.toTransferMoney(1);
+        moneyTransferPage.getEmptyCardFieldAlert();
     }
 
     @Test
     @Tag("skip")
     public void shouldHaveEmptySumAlert() {
-        DashboardPage.toTransferMoney(2);
-        MoneyTransferPage.getEmptySumAlert(1);
+        dashboardPage.toTransferMoney(2);
+        moneyTransferPage.getEmptySumAlert(1);
     }
 
     @Test
     @Tag("skip")
     public void shouldHaveWrongCardNumberAlert () {
-        DashboardPage.toTransferMoney(1);
-        MoneyTransferPage.getWrongCardFieldAlert();
+        dashboardPage.toTransferMoney(1);
+        moneyTransferPage.getWrongCardFieldAlert();
     }
 
     @Test
-    @Tag("skip")
     public void shouldHaveInsufficientBalanceAlert() {
-        DashboardPage.toTransferMoney(1);
-        MoneyTransferPage.getInsufficientBalanceAlert(1);
+        int balance = dashboardPage.getCardBalance(1);
+        dashboardPage.toTransferMoney(1);
+        moneyTransferPage.getInsufficientBalanceAlert(1, balance);
+    }
+
+    @Test
+    public void shouldCancelTransfer() {
+        dashboardPage.toTransferMoney(1);
+        moneyTransferPage.cancelTransfer();
+        dashboardPage.cards.first().shouldBe(visible);
     }
 
 }

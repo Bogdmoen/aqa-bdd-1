@@ -47,7 +47,7 @@ public class APIData {
 
     }
 
-    public static void getCardInfo() {
+    public static List<String> getCardInfo() {
         auth();
         response = RestAssured.given()
                 .spec(requestSpec)
@@ -60,7 +60,7 @@ public class APIData {
                 .response();
         List<String> jsonResponse = response.jsonPath().getList("balance");
         System.out.println(jsonResponse);
-
+        return jsonResponse;
     }
 
     @Test
