@@ -38,20 +38,4 @@ public class DashboardPage {
         return new MoneyTransferPage();
     }
 
-    public void setToInitialState(MoneyTransferPage moneyTransferPage) {
-        int firstAmount = getCardBalance(1);
-        int secondAmount = getCardBalance(2);
-        int transferAmount;
-        if (firstAmount < secondAmount) {
-            transferAmount = 10000 - firstAmount;
-            toTransferMoney(1);
-            moneyTransferPage.transferSum(transferAmount, 2);
-        }
-        else {
-            transferAmount = 10000 - secondAmount;
-            toTransferMoney(2);
-            moneyTransferPage.transferSum(transferAmount, 1);
-        }
-
-    }
 }

@@ -35,29 +35,31 @@ public class TransferTest {
         if (testInfo.getTags().contains("skip")) {
             return;
         }
-        dashboardPage.setToInitialState(moneyTransferPage);
+        DataHelper.setToInitialState(dashboardPage, moneyTransferPage);
     }
 
     @Test
     public void shouldTransferSumToFirst() {
         int amount = DataHelper.getValidSumForTransfer();
-        int initialBalance = dashboardPage.getCardBalance(1);
+        int initialBalanceFirst = dashboardPage.getCardBalance(1);
+        int initialBalanceSecond = dashboardPage.getCardBalance(2);
         dashboardPage.toTransferMoney(1);
         moneyTransferPage.transferSum(amount, 2);
-        int actual = dashboardPage.getCardBalance(1);
-        int expected = initialBalance + amount;
-        assertEquals(expected, actual);
+        int[] expected = {initialBalanceFirst + amount, initialBalanceSecond - amount};
+        int[] actual =  {dashboardPage.getCardBalance(1), dashboardPage.getCardBalance(2)};
+        assertArrayEquals(expected, actual);
     }
 
     @Test
     public void shouldTransferSumToSecond() {
         int amount = DataHelper.getValidSumForTransfer();
-        int initialBalance = dashboardPage.getCardBalance(2);
+        int initialBalanceFirst = dashboardPage.getCardBalance(1);
+        int initialBalanceSecond = dashboardPage.getCardBalance(2);
         dashboardPage.toTransferMoney(2);
         moneyTransferPage.transferSum(amount, 1);
-        int actual = dashboardPage.getCardBalance(2);
-        int expected = initialBalance + amount;
-        assertEquals(expected, actual);
+        int[] expected = {initialBalanceFirst - amount, initialBalanceSecond + amount};
+        int[] actual = {dashboardPage.getCardBalance(1), dashboardPage.getCardBalance(2)};
+        assertArrayEquals(expected, actual);
     }
 
     @Test

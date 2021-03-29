@@ -2,6 +2,8 @@ package ru.netology.web.data;
 
 import com.github.javafaker.Faker;
 import lombok.Value;
+import ru.netology.web.page.DashboardPage;
+import ru.netology.web.page.MoneyTransferPage;
 
 import java.util.Locale;
 
@@ -54,5 +56,20 @@ public  class DataHelper {
     }
 
 
+    public static void setToInitialState(DashboardPage dashboardPage, MoneyTransferPage moneyTransferPage) {
+        int firstAmount = dashboardPage.getCardBalance(1);
+        int secondAmount = dashboardPage.getCardBalance(2);
+        int transferAmount;
+        if (firstAmount < secondAmount) {
+            transferAmount = 10000 - firstAmount;
+            dashboardPage.toTransferMoney(1);
+            moneyTransferPage.transferSum(transferAmount, 2);
+        }
+        else {
+            transferAmount = 10000 - secondAmount;
+            dashboardPage.toTransferMoney(2);
+            moneyTransferPage.transferSum(transferAmount, 1);
+        }
+    }
 
 }
