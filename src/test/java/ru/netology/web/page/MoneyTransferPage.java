@@ -11,13 +11,13 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selenide.$;
 
 public class MoneyTransferPage {
-    public SelenideElement fieldAmount = $("[data-test-id='amount'] .input__control");
-    public  SelenideElement fieldFrom = $("[data-test-id='from'] .input__control");
-    public  SelenideElement fieldTo = $("[data-test-id='to'] .input__control");
-    public  SelenideElement transferButton = $("[data-test-id='action-transfer']");
-    public  SelenideElement cancelButton = $("[data-test-id='action-cancel']");
-    public  SelenideElement errorNotification = $("[data-test-id='error-notification']");
-    public  SelenideElement errorNotificationText = $("[data-test-id='error-notification'] .notification__content");
+    public final SelenideElement fieldAmount = $("[data-test-id='amount'] .input__control");
+    public final SelenideElement fieldFrom = $("[data-test-id='from'] .input__control");
+    public final SelenideElement fieldTo = $("[data-test-id='to'] .input__control");
+    public final SelenideElement transferButton = $("[data-test-id='action-transfer']");
+    public final SelenideElement cancelButton = $("[data-test-id='action-cancel']");
+    public final SelenideElement errorNotification = $("[data-test-id='error-notification']");
+    public final SelenideElement errorNotificationText = $("[data-test-id='error-notification'] .notification__content");
 
     public MoneyTransferPage() {
         $(By.xpath("//h1[text()='Пополнение карты']")).shouldBe(visible);

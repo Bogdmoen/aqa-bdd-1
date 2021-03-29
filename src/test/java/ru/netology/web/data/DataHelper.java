@@ -8,12 +8,12 @@ import java.util.Locale;
 public  class DataHelper {
     private DataHelper() {}
 
-    private static Faker faker = new Faker(new Locale("ru"));
+    private static final Faker faker = new Faker(new Locale("ru"));
 
     @Value
     public static class AuthInfo {
-        private String login;
-        private String password;
+        String login;
+        String password;
     }
 
     public static AuthInfo getAuthInfo() {
@@ -27,12 +27,12 @@ public  class DataHelper {
 
     @Value
     public static class VerificationCode {
-        private String code;
+        String code;
     }
 
     @Value
     public static class Card {
-        private String number;
+        String number;
     }
 
     public static VerificationCode getVerificationCodeFor(AuthInfo authInfo) {

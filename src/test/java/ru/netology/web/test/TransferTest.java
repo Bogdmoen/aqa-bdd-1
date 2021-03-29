@@ -8,7 +8,6 @@ import ru.netology.web.page.LoginPage;
 import ru.netology.web.page.MoneyTransferPage;
 import ru.netology.web.page.VerificationPage;
 
-import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,19 +15,15 @@ import static ru.netology.web.data.DataHelper.*;
 
 public class TransferTest {
 
-    private LoginPage loginPage;
-    private VerificationPage verificationPage;
     private DashboardPage dashboardPage;
     private MoneyTransferPage moneyTransferPage;
 
     @BeforeEach
     public void setUp() {
         open("http://localhost:9999");
-//        LoginPage.validLogin(getAuthInfo());
-//        VerificationPage.validVerify(getVerificationCodeFor(getAuthInfo()));
-        loginPage = new LoginPage();
+        LoginPage loginPage = new LoginPage();
         val authInfo = getAuthInfo();
-        verificationPage = loginPage.validLogin(authInfo);
+        VerificationPage verificationPage = loginPage.validLogin(authInfo);
         val verificationCode = DataHelper.getVerificationCodeFor(authInfo);
         dashboardPage = verificationPage.validVerify(verificationCode);
         moneyTransferPage = dashboardPage.toTransferMoney(1);
@@ -42,22 +37,6 @@ public class TransferTest {
         }
         dashboardPage.setToInitialState(moneyTransferPage);
     }
-
-
-//    @Test
-//    public void shouldLogin () {
-//        val loginPage = new LoginPage();
-//        val authInfo = getAuthInfo();
-//        val verificationPage = loginPage.validLogin(authInfo);
-//        val verificationCode = DataHelper.getVerificationCodeFor(authInfo);
-//        val dashboardPage = verificationPage.validVerify(verificationCode);
-//        System.out.println(dashboardPage.extractBalance("баланс: 1000 р."));
-//    }
-
-//    @Test
-//    public void shouldExtractBalance() {
-//        System.out.println(DashboardPage.getCardBalance(1));
-//    }
 
     @Test
     public void shouldTransferSumToFirst() {

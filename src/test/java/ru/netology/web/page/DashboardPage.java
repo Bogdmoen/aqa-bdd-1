@@ -8,10 +8,10 @@ import lombok.val;
 import static com.codeborne.selenide.Selenide.*;
 
 public class DashboardPage {
-    public  SelenideElement heading = $("[data-test-id='dashboard']");
-    public  ElementsCollection cards = $$(".list__item");
-    public  ElementsCollection depositButtons = $$("[data-test-id='action-deposit']");
-    public  SelenideElement refreshButton = $("[data-test-id='action-reload']");
+    public final   SelenideElement heading = $("[data-test-id='dashboard']");
+    public final ElementsCollection cards = $$(".list__item");
+    public final ElementsCollection depositButtons = $$("[data-test-id='action-deposit']");
+    public final SelenideElement refreshButton = $("[data-test-id='action-reload']");
     public final String balanceStart = "баланс: ";
     public final String balanceFinish = " р.";
 
@@ -31,7 +31,6 @@ public class DashboardPage {
         val value = text.substring(start + balanceStart.length(), finish);
         return  Integer.parseInt(value);
     }
-
 
     public MoneyTransferPage toTransferMoney (int card) {
         card--;
